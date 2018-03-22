@@ -372,5 +372,18 @@ if [ -n "$CUSTOM_BREW_COMMAND" ]; then
   logk
 fi
 
+# Run post-install dotfiles script
+if [ -d ~/.dotfiles ]; then
+  (
+    cd ~/.dotfiles
+    for i in script/postsetup; do
+      if [ -f "$i" ] && [ -x "$i" ]; then
+        log "Running dotfiles $i:"
+        "$i" 2>/dev/null
+      fi
+    done
+  )
+fi
+
 STRAP_SUCCESS="1"
 log "Your system is now Strap'd! You should restart NOW to complete disk encryption and patch updates!"
