@@ -3,6 +3,8 @@
 #/ Install development dependencies on macOS.
 set -e
 
+caffeinate -di -w $$ &
+
 [ "$1" = "--debug" ] && STRAP_DEBUG="1"
 STRAP_SUCCESS=""
 
