@@ -8,7 +8,7 @@ GITHUB_KEY = ENV["GITHUB_KEY"]
 GITHUB_SECRET = ENV["GITHUB_SECRET"]
 SESSION_SECRET = ENV["SESSION_SECRET"] || SecureRandom.hex
 STRAP_ISSUES_URL = ENV["STRAP_ISSUES_URL"] || \
-                   "https://github.com/mikemcquaid/strap/issues/new"
+                   "https://github.com/guardian/strap/issues/new"
 STRAP_BEFORE_INSTALL = ENV["STRAP_BEFORE_INSTALL"]
 CUSTOM_HOMEBREW_TAP = ENV["CUSTOM_HOMEBREW_TAP"]
 CUSTOM_BREW_COMMAND = ENV["CUSTOM_BREW_COMMAND"]
