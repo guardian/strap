@@ -30,7 +30,7 @@ Replacing [Boxen](https://github.com/boxen/boxen/) in [GitHub](https://github.co
 - Add phone number to security screen message (want to avoid prompting users for information on installation)
 
 ## Usage
-Open https://macos-strap.herokuapp.com/ in your web browser.
+Open https://gu-strap.herokuapp.com/ in your web browser.
 
 Instead, to run Strap locally run:
 ```bash
