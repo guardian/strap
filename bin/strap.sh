@@ -46,7 +46,7 @@ STDIN_FILE_DESCRIPTOR="0"
 # STRAP_GITHUB_TOKEN=
 # CUSTOM_HOMEBREW_TAP=
 # CUSTOM_BREW_COMMAND=
-STRAP_ISSUES_URL="https://github.com/mikemcquaid/strap/issues/new"
+STRAP_ISSUES_URL='https://github.com/MikeMcQuaid/strap/issues/new'
 
 # We want to always prompt for sudo password at least once rather than doing
 # root stuff unexpectedly.
@@ -69,6 +69,9 @@ abort() { STRAP_STEP="";   echo "!!! $*" >&2; exit 1; }
 log()   { STRAP_STEP="$*"; sudo_init; echo "--> $*"; }
 logn()  { STRAP_STEP="$*"; sudo_init; printf -- "--> %s " "$*"; }
 logk()  { STRAP_STEP="";   echo "OK"; }
+escape() {
+  echo "${1//\'/\\\'}"
+}
 
 sw_vers -productVersion | grep $Q -E "^10.(9|10|11|12|13)" || {
   abort "Run Strap on macOS 10.9/10/11/12/13."
@@ -93,7 +96,7 @@ sudo launchctl load /System/Library/LaunchDaemons/com.apple.alf.agent.plist 2>/d
 if [ -n "$STRAP_GIT_NAME" ] && [ -n "$STRAP_GIT_EMAIL" ]; then
   sudo defaults write /Library/Preferences/com.apple.loginwindow \
     LoginwindowText \
-    "Found this computer? Please contact $STRAP_GIT_NAME at $STRAP_GIT_EMAIL."
+    "'Found this computer? Please contact $(escape "$STRAP_GIT_NAME") at $(escape "$STRAP_GIT_EMAIL").'"
 fi
 logk
 
@@ -124,7 +127,7 @@ then
   sudo touch "$CLT_PLACEHOLDER"
   CLT_PACKAGE=$(softwareupdate -l | \
                 grep -B 1 -E "Command Line (Developer|Tools)" | \
-                awk -F"*" '/^ +\*/ {print $2}' | sed 's/^ *//' | head -n1)
+                awk -F"*" '/^ +\*/ {print $2}' | sed 's/^ *//' | tail -n1)
   sudo softwareupdate -i "$CLT_PACKAGE"
   sudo rm -f "$CLT_PLACEHOLDER"
   if ! [ -f "/usr/include/iconv.h" ]; then
@@ -293,7 +296,7 @@ if [ -n "$STRAP_GITHUB_USER" ]; then
 fi
 
 # Setup Brewfile
-if [ -n "$STRAP_GITHUB_USER" ] && ( [ ! -f "$HOME/.Brewfile" ] || [ "$HOME/.Brewfile" -ef "$HOME/.homebrew-brewfile/Brewfile" ] ); then
+if [ -n "$STRAP_GITHUB_USER" ] && { [ ! -f "$HOME/.Brewfile" ] || [ "$HOME/.Brewfile" -ef "$HOME/.homebrew-brewfile/Brewfile" ]; }; then
   HOMEBREW_BREWFILE_URL="https://github.com/$STRAP_GITHUB_USER/homebrew-brewfile"
 
   if git ls-remote "$HOMEBREW_BREWFILE_URL" &>/dev/null; then
@@ -322,8 +325,9 @@ fi
 
 # Tap a custom Homebrew tap
 if [ -n "$CUSTOM_HOMEBREW_TAP" ]; then
-  log "Tapping $CUSTOM_HOMEBREW_TAP Homebrew tap:"
-  brew tap "$CUSTOM_HOMEBREW_TAP"
+  read -ra CUSTOM_HOMEBREW_TAP <<< "$CUSTOM_HOMEBREW_TAP"
+  log "Running 'brew tap ${CUSTOM_HOMEBREW_TAP[*]}':"
+  brew tap "${CUSTOM_HOMEBREW_TAP[@]}"
   logk
 fi
 
