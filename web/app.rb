@@ -54,7 +54,7 @@ get "/" do
     %Q{file an issue at <a href="#{STRAP_ISSUES_URL}">#{STRAP_ISSUES_URL}</a>}
   end
 
-  @title = "👢 Strap"
+  @title = "🗞 Strap"
   @text = <<~HTML
     To Strap your system:
     <ol>
