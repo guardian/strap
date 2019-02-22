@@ -45,7 +45,7 @@ get "/" do
     before_install_list_item = "<li>#{STRAP_BEFORE_INSTALL}</li>"
   end
 
-  @title = "👢 Strap"
+  @title = "🗞 Strap"
   @text = <<~HTML
     To Strap your system:
     <ol>
