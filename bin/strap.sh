@@ -12,6 +12,8 @@ cleanup() {
     sudo kill "$STRAP_SUDO_WAIT_PID"
   fi
   sudo -k
+  unset AD_USERNAME
+  unset AD_PASSWORD
   rm -f "$CLT_PLACEHOLDER"
   if [ -z "$STRAP_SUCCESS" ]; then
     if [ -n "$STRAP_STEP" ]; then
@@ -80,6 +82,17 @@ echo "$MACOS_VERSION" | grep $Q -E "^10.(9|10|11|12|13|14)" || {
 
 [ "$USER" = "root" ] && abort "Run Strap as yourself, not root."
 groups | grep $Q admin || abort "Add $USER to the admin group."
+
+# If we're not already attached to a domain then setup and export credentials
+if [ -z "$(dsconfigad -show)" ]; then
+  logn "Please enter your AD/Windows username (usually Firstname_Lastname): "
+  read AD_USERNAME
+  logn " and now your AD/Windows password: "
+  read -s AD_PASSWORD
+  echo
+  export AD_USERNAME
+  export AD_PASSWORD
+fi
 
 # Set some basic security settings.
 logn "Configuring security settings:"
