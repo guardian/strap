@@ -4,7 +4,8 @@
 set -e
 
 # If we are being called from sudo then we behave as an SUDO_ASKPASS helper
-if [ "$(ps -p $PPID -o comm=)" == "sudo" ]; then
+PPNAME="$(ps -p $PPID -o comm=)"
+if [ "$PPNAME" == "sudo" -o "$PPNAME" == "/usr/bin/sudo" ]; then
   if [ -n "$HOMEBREW_SUDO_PASSWD" ]; then
     echo $HOMEBREW_SUDO_PASSWD
     exit 0
