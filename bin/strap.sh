@@ -5,8 +5,8 @@ set -e
 
 # If we are being called from sudo then we behave as an SUDO_ASKPASS helper
 if [ "$(ps -p $PPID -o comm=)" == "sudo" ]; then
-  if [ -n "$SUDO_PASSWD" ]; then
-    echo $SUDO_PASSWD
+  if [ -n "$HOMEBREW_SUDO_PASSWD" ]; then
+    echo $HOMEBREW_SUDO_PASSWD
     exit 0
   else
     exit 1
@@ -18,7 +18,7 @@ STRAP_SUCCESS=""
 
 cleanup() {
   set +e
-  unset SUDO_PASSWD
+  unset HOMEBREW_SUDO_PASSWD
   unset SUDO_ASKPASS
   sudo -k
   rm -f "$CLT_PLACEHOLDER"
@@ -74,7 +74,7 @@ reset_debug() {
 
 have_sudo_passwd() {
   clear_debug
-  if [ -n "$SUDO_PASSWD" ]; then
+  if [ -n "$HOMEBREW_SUDO_PASSWD" ]; then
     echo "true"
   else
     echo "false"
@@ -99,7 +99,7 @@ PASSWORD
         break
       fi
     done
-    clear_debug; export SUDO_PASSWD=${password}; reset_debug
+    clear_debug; export HOMEBREW_SUDO_PASSWD=${password}; reset_debug
     fq_script_filename=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE[0]}")
     # this must be executable
     chmod +x "$fq_script_filename"
@@ -194,7 +194,7 @@ elif [ -n "$STRAP_INTERACTIVE" ]; then
               <key>Username</key>
               <string>${USER}</string>
               <key>Password</key>
-              <string>${SUDO_PASSWD}</string>
+              <string>${HOMEBREW_SUDO_PASSWD}</string>
           </dict>
         </plist>
 PLIST
