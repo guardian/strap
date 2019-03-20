@@ -88,6 +88,7 @@ sudo_init() {
   if ! sudo -vn &>/dev/null; then
     while true; do
       read -s -p "--> Enter your password (for sudo access): " password
+      echo
       set +e
       sudo -Sv 2>/dev/null <<PASSWORD
 $password
