@@ -1,3 +1,14 @@
+# Strap at the Guardian
+
+This is the Guardian fork of Strap, customised to provide a base environment for engineers in our digital department.
+
+[Get started and install all this good stuff on your laptop.](https://gu-strap.herokuapp.com/)
+
+# Customisations
+
+To avoid falling out of sync with upstream Strap, we try to keep our customisations to [a brew cask](https://github.com/guardian/homebrew-devtools/pull/18) and your clone of [dotfiles](https://github.com/guardian/dotfiles).
+
+
 # Strap
 A script to bootstrap a minimal macOS development system. This does not assume you're doing Ruby/Rails/web development but installs the minimal set of software every macOS developer will want.
 
